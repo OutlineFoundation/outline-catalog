@@ -1,4 +1,4 @@
-# Awesome Outline
+# Outline Components Catalog
 
 A curated index of **Outline-compatible censorship-circumvention strategies,
 adapters, and tools** from the Outline team and the broader community. This is
