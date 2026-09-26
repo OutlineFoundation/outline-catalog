@@ -52,6 +52,7 @@ Prevents: **content-based blocking** and **domain-based blocking**
 | :-------- | :----- | :--------------- | :--- | :---- |
 | TCP stream split | 🧩 Outline | [transport/split](https://pkg.go.dev/golang.getoutline.org/sdk/transport/split) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/transport/split) | Writer, stream dialer | Splits outgoing stream bytes at configured positions. The SDK README lists it as a TCP-layer SNI-blocking bypass strategy. |
 | TLS record fragmentation | 🧩 Outline | [transport/tlsfrag](https://pkg.go.dev/golang.getoutline.org/sdk/transport/tlsfrag) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/transport/tlsfrag) | Connection wrapper, stream dialer | Splits the first TLS ClientHello record into multiple TLS records. |
+| QUIC prelude | 🧩 Outline | [x/quicprelude](https://pkg.go.dev/golang.getoutline.org/sdk/x/quicprelude) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/x/quicprelude) | Packet listener | Sends prelude datagrams ahead of every QUIC ClientHello to evade middleboxes that cache verdicts based on the first QUIC Initial packet's TLS SNI. Supports injectable generators and configurable version codepoints. |
 | Packet reordering | 🧩 Outline | [x/disorder](https://pkg.go.dev/golang.getoutline.org/sdk/x/disorder) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/x/disorder) | Writer, stream dialer | Sends a selected write with low TTL or Hop Limit so TCP retransmission changes packet arrival order (a DPI-desynchronization technique). |
 
 ## Carry
@@ -115,7 +116,7 @@ Prevents: **single-strategy failure** across networks, censors, and time.
 | Component | Origin | Package / source | Role | Notes |
 | :-------- | :----- | :--------------- | :--- | :---- |
 | Smart Dialer | 🧩 Outline | [x/smart](https://pkg.go.dev/golang.getoutline.org/sdk/x/smart) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/x/smart) | Strategy finder | Searches DNS and TLS strategies for test domains, then returns a working `transport.StreamDialer`. |
-| Transport URL config | 🧩 Outline | [x/configurl](https://pkg.go.dev/golang.getoutline.org/sdk/x/configurl) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/x/configurl) | Strategy composer | Parses composable transport strings (e.g. `ss://…`, `tls\|tlsfrag:1`, `doh\|override:host=…`) into a working dialer. Covers strategies from all buckets — Resolve, Shape, Carry, Relay — in a single config language. Custom parsers can be registered to extend the config language with new strategies. Used by all SDK tools. |
+| Transport URL config | 🧩 Outline | [x/configurl](https://pkg.go.dev/golang.getoutline.org/sdk/x/configurl) / [source](https://github.com/OutlineFoundation/outline-sdk/tree/main/x/configurl) | Strategy composer | Parses composable transport strings (e.g. `ss://…`, `tls\|tlsfrag:1`, `doh\|override:host=…`, `quicprelude`) into working dialers and packet listeners. Covers strategies from all buckets — Resolve, Shape, Carry, Relay — in a single config language. Custom parsers can be registered to extend the config language with new strategies. Used by all SDK tools. |
 
 ## Measure
 
